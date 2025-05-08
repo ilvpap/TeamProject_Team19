@@ -56,5 +56,6 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "TeamProject_Team19.sln"
+    "dotnet.defaultSolution": "TeamProject_Team19.sln",
+    "dotnet.preferCSharpExtension": true
 }
