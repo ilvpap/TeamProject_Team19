@@ -12,9 +12,9 @@ public class Item : MonoBehaviour
     [Header("아이템 설정")]
     public ItemType itemType;
     [SerializeField] private float value = 20f; // 회복량 / 점수 증가량 / 속도 변경 값
-
+    
     public void ApplyEffect()
-    {
+    {   
         switch(itemType)
         {
             case ItemType.HealthRecovery:
