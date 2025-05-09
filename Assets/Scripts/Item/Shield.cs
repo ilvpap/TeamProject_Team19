@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class Shield : Item
 {
-    public override void Activate(Player player)
+    public override void Activate(PlayerController player)
     {
-        player.Shield(value); // Item.cs에서 Value 값 가져옴
+        /*player.Shield(value);*/ // Item.cs에서 Value 값 가져옴
     }
 }
