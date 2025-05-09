@@ -4,11 +4,11 @@ using UnityEngine;
 
 public class Item : MonoBehaviour
 {
-    public Player player;
+    public PlayerController player;
     public int value = 0;
 
-    public virtual void ApplyEffect(Player player) { }
-    public virtual void Activate(Player player) { }
+    public virtual void ApplyEffect(PlayerController player) { }
+    public virtual void Activate(PlayerController player) { }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
