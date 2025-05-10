@@ -15,11 +15,11 @@ public class Item : MonoBehaviour
     private void OnTriggerEnter2D(Collider2D collision)
     {
         
-        Player playerComponent = collision.gameObject.GetComponent<Player>(); 
-        if (playerComponent != null)
+        Player player = collision.gameObject.GetComponent<Player>(); 
+        if (player != null)
         {
             
-            PlayerStats stat = playerComponent.Stat;
+            PlayerStats stat = player.Stat;
             ApplyEffect(stat);
             Activate(stat);
             Destroy(gameObject);
