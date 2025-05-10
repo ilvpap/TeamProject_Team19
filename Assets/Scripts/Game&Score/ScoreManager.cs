@@ -1,21 +1,10 @@
 using UnityEngine;
-// [추가]
-using UnityEngine.UI;
-using TMPro;
 
 public class ScoreManager : MonoBehaviour
 {
-    private static ScoreManager instance;
-    public static ScoreManager Instance
-    {
-        get
-        {
-            return instance;
-        }
-    }
-
-    [SerializeField] private float finishScore = 1000f;
-    [SerializeField] private float scoreIncreaseRate = 10f;
+    [Header("점수 설정")]
+    [SerializeField] private float finishScore = 1000f;      // 게임 클리어에 필요한 점수
+    [SerializeField] private float scoreIncreaseRate = 10f;  // 초당 점수 상승량
 
     private float currentScore = 0f;
     private float highScore = 0f;
@@ -23,56 +12,39 @@ public class ScoreManager : MonoBehaviour
     public float CurrentScore => currentScore;
     public float HighScore => highScore;
 
-    // [추가] UI 텍스트 연결 (Score, HighScore 표시)
-    [SerializeField] private TextMeshProUGUI currentScoreText;
-    [SerializeField] private TextMeshProUGUI highScoreText;
-
     private void Awake()
     {
-        // 싱글톤 할당
-        if (instance == null)
-        {
-            instance = this;
-        }
-        else
-        {
-            Destroy(gameObject);
-            return;
-        }
-
+        // 이전에 저장된 하이스코어 불러오기
         highScore = PlayerPrefs.GetFloat("HighScore", 0f);
     }
 
     private void Update()
     {
+        // 게임오버 시 더 이상 점수를 올리지 않음
         if (GameManager.Instance.IsGameOver) return;
 
-        // 시간 흐름에 따른 점수 증가
+        // 초당 점수 증가
         currentScore += scoreIncreaseRate * Time.deltaTime;
 
-        // UI 갱신
-        if (currentScoreText != null)
-        {
-            currentScoreText.text = $"Score : {currentScore:F2}";
-        }
-        if (highScoreText != null)
-        {
-            highScoreText.text = $"High Score : {highScore:F2}";
-        }
-
-        // 목표 점수 달성 시 게임 종료 처리
+        // finishScore 도달 시 게임 클리어 처리
         if (currentScore >= finishScore)
         {
             GameManager.Instance.GameOver(true);
         }
     }
 
+    /// <summary>
+    /// 외부(아이템 획득 등)에서 점수를 추가할 때 호출
+    /// </summary>
     public void AddScore(float amount)
     {
         if (GameManager.Instance.IsGameOver) return;
         currentScore += amount;
     }
 
+    /// <summary>
+    /// 현재 점수를 기준으로 하이스코어 갱신
+    /// </summary>
     public void SaveHighScore()
     {
         if (currentScore > highScore)
