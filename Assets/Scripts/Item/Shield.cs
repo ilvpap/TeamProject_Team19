@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class Shield : Item
 {
-    public override void Activate(PlayerController player)  
-    {
-       /*player.StartCoroutine(ShieldRoutine(player));*/           //코루틴 시작
-    }
+    //public override void Activate(PlayerController player)  
+    //{
+    //   /*player.StartCoroutine(ShieldRoutine(player));*/           //코루틴 시작
+    //}
 
     //private IEnumerator ShieldRoutine(PlayerController player)    
     //{

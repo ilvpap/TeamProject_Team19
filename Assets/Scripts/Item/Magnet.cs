@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class Magnet : Item
 {
-    public override void Activate(PlayerController player)
-    {
-        /*player.StartCoroutine(MagnetRoutine(player));  */         //코루틴 시작
-    }
+    //public override void Activate(PlayerController player)
+    //{
+    //    /*player.StartCoroutine(MagnetRoutine(player));  */         //코루틴 시작
+    //}
 
     //private IEnumerator MagnetRoutine(PlayerController player)
     //{
