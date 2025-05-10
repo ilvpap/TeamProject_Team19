@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class Boost : Item
 {
-    public override void Activate(PlayerController player)
+    public override void Activate(PlayerStats player)
     {
         /*player.StartCoroutine(BoostRoutine(player)); */  //코루틴 시작
     }

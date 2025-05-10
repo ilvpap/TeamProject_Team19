@@ -1,24 +1,30 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
 
 public class Item : MonoBehaviour
 {
-    public PlayerController player;
-    public int value = 0;
+    public Player player;
+    public int value = 100; //나중에 변경
 
-    public virtual void ApplyEffect(PlayerController player) { }
-    public virtual void Activate(PlayerController player) { }
+    public virtual void ApplyEffect(PlayerStats player) { }
+    public virtual void Activate(PlayerStats player) { }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        player = collision.gameObject.GetComponent<PlayerController>();
-        if (player != null)
+        
+        Player playerComponent = collision.gameObject.GetComponent<Player>(); 
+        if (playerComponent != null)
         {
-            ApplyEffect(player);
-            Activate(player);
+            
+            PlayerStats stat = playerComponent.Stat;
+            ApplyEffect(stat);
+            Activate(stat);
             Destroy(gameObject);
 
         }
     }
+   
 }
