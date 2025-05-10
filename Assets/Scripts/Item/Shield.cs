@@ -4,8 +4,15 @@ using UnityEngine;
 
 public class Shield : Item
 {
-    public override void Activate(PlayerController player)
+    public override void Activate(PlayerController player)  
     {
-        /*player.Shield(value);*/ // Item.cs에서 Value 값 가져옴
+       /*player.StartCoroutine(ShieldRoutine(player));*/           //코루틴 시작
     }
+
+    //private IEnumerator ShieldRoutine(PlayerController player)    
+    //{
+    //    player.isShielded = true;                         //무적 on
+    //    yield return new WaitForSeconds(value);           //지속시간 value값
+    //    player.isShielded = false;                        //무적off
+    //}
 }

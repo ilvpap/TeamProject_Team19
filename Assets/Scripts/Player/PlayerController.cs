@@ -3,18 +3,54 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Globalization;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerController : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        Console.WriteLine("누구세용");
-    }
 
-    // Update is called once per frame
-    void Update()
+    private Rigidbody2D rb; //통일 위해서
+    private CapsuleCollider2D capsuleCollider;
+
+    private int jumpCnt = 0;
+    private int maxJumpCnt = 2;
+    private Vector2 originColliderSize;
+    private Vector2 originColliderOffset;
+    private void Awake()
     {
-        
+        rb = GetComponent<Rigidbody2D>();
+        capsuleCollider = GetComponent<CapsuleCollider2D>();
+        originColliderSize = capsuleCollider.size;
+        originColliderOffset = capsuleCollider.offset;
+    }
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        if(collision.gameObject.layer == LayerMask.NameToLayer("Ground"))
+        {
+            jumpCnt = 0;
+        }
+    }
+    public void Jump()
+    {
+        if (maxJumpCnt <= jumpCnt)
+        {
+            return;
+        }
+        rb.velocity = new Vector2(rb.velocity.x, 7f); //rb.velocity의 x값을 되돌려주겠다
+        //rb.AddForce(new Vector2(0, 350)); //AddForce = 날리는 힘, Y값으로 날려버린다
+        jumpCnt++;
+
+    }
+    public void Slide(bool isSliding)
+    {
+        if (isSliding)
+        {
+            capsuleCollider.size = new Vector2(originColliderSize.x, originColliderSize.y / 2);
+            capsuleCollider.offset = new Vector2(originColliderOffset.x, originColliderOffset.y - (capsuleCollider.size.y / 2)); //중심점을 내리는게 아님
+        }
+        else
+        {
+            capsuleCollider.size = originColliderSize;
+            capsuleCollider.offset = originColliderOffset;
+        }
     }
 }
