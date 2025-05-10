@@ -5,8 +5,8 @@ using UnityEngine;
 
 public class PlayerStats
 {
-    private float curHp; //필드 선언
-    private float maxHp;
+    public float curHp; //필드 선언
+    public float maxHp;
 
     public float MaxHp { get { return maxHp; } } //get set 프로퍼티 get은 (읽기를 외부에서 가능하게) set은 (쓰기를 외부에서 가능하게)
     public float CurHp { get { return curHp; } }
