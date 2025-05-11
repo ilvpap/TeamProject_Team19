@@ -9,7 +9,7 @@ public class Item : MonoBehaviour
     public int value = 100; //나중에 변경
 
     public virtual void ApplyEffect(PlayerStats player) { }
-    public virtual void Activate(PlayerStats player) { }
+    public virtual void Activate(Player player) { }
 
 
     private void OnTriggerEnter2D(Collider2D collision)
@@ -21,7 +21,7 @@ public class Item : MonoBehaviour
             
             PlayerStats stat = player.Stat;
             ApplyEffect(stat);
-            Activate(stat);
+            Activate(player);
             Destroy(gameObject);
 
         }
