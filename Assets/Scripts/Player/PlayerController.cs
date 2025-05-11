@@ -10,6 +10,7 @@ public class PlayerController : MonoBehaviour
 
     private Rigidbody2D rb; //통일 위해서
     private CapsuleCollider2D capsuleCollider;
+    public bool isMagnetActive = false;
 
     private int jumpCnt = 0;
     private int maxJumpCnt = 2;

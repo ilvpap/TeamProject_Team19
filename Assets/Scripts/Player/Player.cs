@@ -32,7 +32,21 @@ public class Player : MonoBehaviour
             stat.GetDamage(stat.MaxHp);
         }
 
+        //CS1503 : Player에서 PlayerStats으로 변환할 수 없습니다. [43번째줄 this 컴파일 에러]
+
+        //if (collision.gameObject.CompareTag("Item"))
+        //{
+        //    Item item = collision.gameObject.GetComponent<Item>();
+        //    if (item != null)
+        //    {
+        //        item.ApplyEffect(stat);
+        //        item.Activate(this);
+        //        Destroy(collision.gameObject);
+        //    }
+        //}
+
         Debug.Log("<color=red>"+ stat.CurHp + "</color>");
+
     }
 
     IEnumerator GetDamagePerTime() // 동기: 한개 한개 실행함 (직렬),  비동기: 병행함 (병렬), 코루틴 : 비동기처럼 보임 (두개의 파일을 순서대로)
