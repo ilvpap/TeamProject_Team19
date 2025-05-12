@@ -10,11 +10,14 @@ public class PlayerController : MonoBehaviour
 
     private Rigidbody2D rb; //통일 위해서
     private CapsuleCollider2D capsuleCollider;
+    public bool isMagnetActive = false;
+    public Animator animator;
 
     private int jumpCnt = 0;
     private int maxJumpCnt = 2;
     private Vector2 originColliderSize;
     private Vector2 originColliderOffset;
+
     private void Awake()
     {
         rb = GetComponent<Rigidbody2D>();
@@ -29,16 +32,20 @@ public class PlayerController : MonoBehaviour
             jumpCnt = 0;
         }
     }
+    public void onJumpButtonClicked()
+    {
+        animator.SetTrigger("IsJumping");
+    }
     public void Jump()
     {
         if (maxJumpCnt <= jumpCnt)
         {
             return;
         }
+        onJumpButtonClicked();
         rb.velocity = new Vector2(rb.velocity.x, 7f); //rb.velocity의 x값을 되돌려주겠다
         //rb.AddForce(new Vector2(0, 350)); //AddForce = 날리는 힘, Y값으로 날려버린다
         jumpCnt++;
-
     }
     public void Slide(bool isSliding)
     {

@@ -5,8 +5,8 @@ using UnityEngine;
 public class Score : Item
 {
     //[SerializeField] private ScoreManager scoreManager;
-    //public override void ApplyEffect(PlayerStats player)
-    //{
-    //    scoreManager.AddScore(value); // Item.cs에서 Value 값 가져옴
-    //}
+    public override void ApplyEffect(PlayerStats player)
+    {
+        ScoreManager.Instance.AddScore(value); // Item.cs에서 Value 값 가져옴
+    }
 }
