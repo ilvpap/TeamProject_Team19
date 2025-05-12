@@ -20,6 +20,11 @@ public class Player : MonoBehaviour
     //} > 데미지가 더 다는 현상이 일어났는데 private void Update .. 때문이엇다
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        if (GetComponent<PlayerController>().isShielded)
+        {
+            return;
+        }
+
         if(collision.gameObject.layer == LayerMask.NameToLayer("Obstacle"))
         {
             //방해물의 데미지를 바꿀 경우
