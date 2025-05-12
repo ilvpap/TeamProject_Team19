@@ -10,6 +10,7 @@ public class PlayerController : MonoBehaviour
 
     private Rigidbody2D rb; //통일 위해서
     private CapsuleCollider2D capsuleCollider;
+    private bool IsGround = false;
     public bool isMagnetActive = false;
     public Animator animator;
     public bool isShielded = false;
@@ -32,11 +33,30 @@ public class PlayerController : MonoBehaviour
         {
             jumpCnt = 0;
         }
+
+        if (collision.gameObject.CompareTag("Ground"))
+        {
+            IsGround = true;
+            animator.SetBool("IsGround", true);
+        }
     }
+
+    private void OnCollisionExit2D(Collision2D collision)
+    {
+        if (collision.gameObject.CompareTag("Ground"))
+        {
+            IsGround = false;
+            animator.SetBool("IsGround", false);
+        }
+    }
+
     public void onJumpButtonClicked()
     {
         animator.SetTrigger("IsJumping");
     }
+
+    
+
     public void Jump()
     {
         if (maxJumpCnt <= jumpCnt)
