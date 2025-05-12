@@ -12,6 +12,7 @@ public class PlayerController : MonoBehaviour
     private CapsuleCollider2D capsuleCollider;
     public bool isMagnetActive = false;
     public Animator animator;
+    public bool isShielded = false;
 
     private int jumpCnt = 0;
     private int maxJumpCnt = 2;
