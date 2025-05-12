@@ -17,6 +17,49 @@ public class Obstacle : MonoBehaviour
     public Transform bottomObject;
     public Transform top2Object;
 
+    public string Obstaclename;
+    public float downspeed = -1f;
+    public GameObject Topobj;
+    [SerializeField]
+    private GameObject player;
+    [SerializeField]
+    private float Dis;
+    [SerializeField]
+    private bool IsDown = false;
+    [SerializeField]
+    private float YRange;
+
+    private void Start()
+    {
+        if (player == null)
+        {
+            player = GameObject.FindGameObjectWithTag("Player");
+        }
+    }
+
+    private void Update()
+    {
+
+        if (IsDown)
+        {
+            if (Topobj.transform.position.y >= YRange)
+            {
+                Topobj.transform.Translate(new Vector3(0, downspeed * Time.deltaTime, 0));
+            }           
+        }
+        else
+        {
+            if (Dis <= 16)
+            {
+
+                IsDown = true;
+
+            }
+        }
+        Dis = Vector3.Distance(Topobj.transform.position, player.transform.position);
+        
+    }
+
     public Vector3 SetRandomPlace(Vector3 lastPosition, int obstacleCount) 
     {
         float holeSize = Random.Range(holeSizeMin, holeSizeMax);
