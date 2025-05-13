@@ -20,7 +20,9 @@ public class Player : MonoBehaviour
     //} > 데미지가 더 다는 현상이 일어났는데 private void Update .. 때문이엇다
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (GetComponent<PlayerController>().isShielded)
+        var controller = GetComponent<PlayerController>();
+
+        if (GetComponent<PlayerController>().isShielded||controller.isBoosted)
         {
             return;
         }

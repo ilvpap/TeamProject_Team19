@@ -3,17 +3,27 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Boost : Item
-{
+{     
     public override void Activate(Player player)
     {
-        /*player.StartCoroutine(BoostRoutine(player)); */  //코루틴 시작
+        PlayerController playerController = player.GetComponent<PlayerController>();
+        if (playerController != null )
+        {
+            player.StartCoroutine(BoostRoutine(playerController));
+        }
     }
 
-    //private IEnumerator BoostRoutine(PlayerController player)
-    //{
-    //    float originalSpeed = player.moveSpeed;                 //원래속도
-    //    player.moveSpeed += 5f;                                 //이동속도 +5
-    //    yield return new WaitForSeconds(value);                 // value만큼 지속시간
-    //    player.moveSpeed = originalSpeed;                       // 원래속도로 
-    //}
+    private IEnumerator BoostRoutine(PlayerController playerController)
+    {
+        float timer = value;
+        while (timer > 0)
+        {
+            playerController.isBoosted = true;
+            Debug.Log("속도 업 효과 진행중... 남은시간: " +((int)timer).ToString("D2"));
+            timer -= Time.deltaTime;
+            yield return null;
+        }
+        playerController.isBoosted = false;
+        Debug.Log("속도 업 종료");
+    }
 }
