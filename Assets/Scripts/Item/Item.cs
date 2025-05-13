@@ -6,7 +6,7 @@ using UnityEngine;
 public class Item : MonoBehaviour
 {
     public Player player;
-    public int value = 100; //나중에 변경
+    public int value = 10; //나중에 변경
 
     public virtual void ApplyEffect(PlayerStats player) { }
     public virtual void Activate(Player player) { }
