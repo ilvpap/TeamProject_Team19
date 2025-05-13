@@ -31,6 +31,14 @@ public class PlayerController : MonoBehaviour
         originColliderSize = capsuleCollider.size;
         originColliderOffset = capsuleCollider.offset;
     }
+    public void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            animator.SetTrigger("IsJumping");
+        }
+    }
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         if(collision.gameObject.layer == LayerMask.NameToLayer("Ground"))
@@ -58,8 +66,6 @@ public class PlayerController : MonoBehaviour
     {
         animator.SetTrigger("IsJumping");
     }
-
-    
 
     public void Jump()
     {
