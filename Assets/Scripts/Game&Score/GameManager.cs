@@ -24,7 +24,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Button quitButton;
     [SerializeField] private TextMeshProUGUI gameOverText;
     [SerializeField] private Button pauseButton;
+    [SerializeField] private AudioClip bgmClip;
 
+    private AudioSource createdAudioSource;
     private bool isGameOver = false;
     public bool IsGameOver => isGameOver;
 
@@ -63,10 +65,16 @@ public class GameManager : MonoBehaviour
         {
             gameOverText.gameObject.SetActive(false);
         }
-
         if (pauseButton != null)
         {
             pauseButton.onClick.AddListener(() => GameOver(false));
+        }
+        if (bgmClip != null)
+        {
+            createdAudioSource = gameObject.AddComponent<AudioSource>();
+            createdAudioSource.clip = bgmClip;
+            createdAudioSource.loop = true;
+            createdAudioSource.Play();
         }
     }
 
@@ -81,6 +89,10 @@ public class GameManager : MonoBehaviour
     public void GameOver(bool isClear = false)
     {
         isGameOver = true;
+        if (createdAudioSource != null)
+        {
+            createdAudioSource.Stop();
+        }
         if (ScoreManager.Instance != null)
         {
             ScoreManager.Instance.SaveHighScore();
