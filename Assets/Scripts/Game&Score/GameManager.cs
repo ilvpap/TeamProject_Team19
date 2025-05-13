@@ -23,6 +23,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Button restartButton;
     [SerializeField] private Button quitButton;
     [SerializeField] private TextMeshProUGUI gameOverText;
+    [SerializeField] private Button pauseButton;
 
     private bool isGameOver = false;
     public bool IsGameOver => isGameOver;
@@ -61,6 +62,11 @@ public class GameManager : MonoBehaviour
         if (gameOverText != null)
         {
             gameOverText.gameObject.SetActive(false);
+        }
+
+        if (pauseButton != null)
+        {
+            pauseButton.onClick.AddListener(() => GameOver(false));
         }
     }
 
