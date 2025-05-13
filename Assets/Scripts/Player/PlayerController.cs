@@ -10,13 +10,17 @@ public class PlayerController : MonoBehaviour
 
     private Rigidbody2D rb; //통일 위해서
     private CapsuleCollider2D capsuleCollider;
+
+    public Animator animator;
+
     private bool IsGround = false;
     public bool isMagnetActive = false;
-    public Animator animator;
     public bool isShielded = false;
+    public bool isBoosted = false;
 
     private int jumpCnt = 0;
     private int maxJumpCnt = 2;
+
     private Vector2 originColliderSize;
     private Vector2 originColliderOffset;
 
