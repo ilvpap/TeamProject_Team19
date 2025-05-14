@@ -39,7 +39,7 @@ public class UIManager : MonoBehaviour
         
         Time.timeScale = 0f; // 일시정지
     }
-}
+
 
     // 버튼용 함수들
     public void RestartGame()
