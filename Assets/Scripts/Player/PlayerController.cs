@@ -14,6 +14,8 @@ public class PlayerController : MonoBehaviour
     public Animator animator;
 
     private bool IsGround = false;
+    private bool IsSliding = false;
+
     public bool isMagnetActive = false;
     public bool isShielded = false;
     public bool isBoosted = false;
@@ -83,5 +85,8 @@ public class PlayerController : MonoBehaviour
             capsuleCollider.size = originColliderSize;
             capsuleCollider.offset = originColliderOffset;
         }
+
+        animator.SetBool("IsSliding", isSliding);
+        
     }
 }

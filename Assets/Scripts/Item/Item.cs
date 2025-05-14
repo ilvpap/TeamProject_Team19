@@ -6,6 +6,7 @@ using UnityEngine;
 public class Item : MonoBehaviour
 {
     public Player player;
+    public AudioClip pickupSound;
     public int value = 10; //나중에 변경
 
     public virtual void ApplyEffect(PlayerStats player) { }
@@ -18,6 +19,10 @@ public class Item : MonoBehaviour
         Player player = collision.gameObject.GetComponent<Player>(); 
         if (player != null)
         {
+            if(pickupSound != null)
+            {
+                AudioSource.PlayClipAtPoint(pickupSound,transform.position);
+            }
             
             PlayerStats stat = player.Stat;
             ApplyEffect(stat);
