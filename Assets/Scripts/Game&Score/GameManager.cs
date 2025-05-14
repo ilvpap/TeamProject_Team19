@@ -101,10 +101,6 @@ public class GameManager : MonoBehaviour
         {
             Debug.Log($"[GameOver] Player HP : {playerStats.CurHp} / {playerStats.MaxHp}");
         }
-        if (isClear)
-        {
-            Debug.Log("게임 클리어!");
-        }
         else
         {
             Debug.Log("게임 오버!");
