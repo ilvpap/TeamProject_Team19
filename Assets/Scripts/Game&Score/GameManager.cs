@@ -2,6 +2,15 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using TMPro;
+// using UnityEngine.SceneManagement; // 중복으로 인해 주석 처리
+using System;
+
+public enum SceneType
+{
+    Main,
+    InGame,
+    Current
+}
 
 public class GameManager : MonoBehaviour
 {
@@ -24,6 +33,7 @@ public class GameManager : MonoBehaviour
     [SerializeField] private Button quitButton;
     [SerializeField] private TextMeshProUGUI gameOverText;
     [SerializeField] private Button pauseButton;
+    [SerializeField] private Button startButton;
     [SerializeField] private AudioClip bgmClip;
 
     private AudioSource createdAudioSource;
@@ -45,6 +55,7 @@ public class GameManager : MonoBehaviour
     private void Start()
     {
         isGameOver = false;
+
         if (player == null)
         {
             player = FindObjectOfType<Player>();
@@ -76,6 +87,10 @@ public class GameManager : MonoBehaviour
             createdAudioSource.loop = true;
             createdAudioSource.Play();
         }
+        if (startButton != null)
+        {
+            startButton.onClick.AddListener(() => LoadScene(SceneType.InGame));
+        }
     }
 
     private void Update()
@@ -101,10 +116,6 @@ public class GameManager : MonoBehaviour
         {
             Debug.Log($"[GameOver] Player HP : {playerStats.CurHp} / {playerStats.MaxHp}");
         }
-        if (isClear)
-        {
-            Debug.Log("게임 클리어!");
-        }
         else
         {
             Debug.Log("게임 오버!");
@@ -125,9 +136,33 @@ public class GameManager : MonoBehaviour
 
     public void QuitGame()
     {
-        Application.Quit();
+        if (SceneManager.GetActiveScene().name == "MainScene")
+        {
+            Application.Quit();
 #if UNITY_EDITOR
-        UnityEditor.EditorApplication.isPlaying = false;
+            UnityEditor.EditorApplication.isPlaying = false;
 #endif
+        }
+        else
+        {
+            SceneManager.LoadScene("MainScene");
+        }
+    }
+
+    public void LoadScene(SceneType type)
+    {
+        Time.timeScale = 1f;
+        switch (type)
+        {
+            case SceneType.Main:
+                SceneManager.LoadScene("MainScene");
+                break;
+            case SceneType.InGame:
+                SceneManager.LoadScene("InGameScene");
+                break;
+            case SceneType.Current:
+                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+                break;
+        }
     }
 }
