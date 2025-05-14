@@ -3,7 +3,14 @@ guid: 21c5f60c78fb6a34baa1e84a2da995ed
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - player: {instanceID: 0}
+  - restartButton: {instanceID: 0}
+  - quitButton: {instanceID: 0}
+  - gameOverText: {instanceID: 0}
+  - pauseButton: {instanceID: 0}
+  - bgmSource: {instanceID: 0}
+  - bgmClip: {fileID: 8300000, guid: f77997c73a6eb5645a292a2df5a8def4, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

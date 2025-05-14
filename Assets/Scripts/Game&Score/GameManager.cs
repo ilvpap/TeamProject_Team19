@@ -1,5 +1,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+using TMPro;
 
 public class GameManager : MonoBehaviour
 {
@@ -16,12 +18,20 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    [SerializeField] private Player player;
+    private PlayerStats playerStats;
+    [SerializeField] private Button restartButton;
+    [SerializeField] private Button quitButton;
+    [SerializeField] private TextMeshProUGUI gameOverText;
+    [SerializeField] private Button pauseButton;
+    [SerializeField] private AudioClip bgmClip;
+
+    private AudioSource createdAudioSource;
     private bool isGameOver = false;
     public bool IsGameOver => isGameOver;
 
     private void Awake()
     {
-        // 싱글톤 할당
         if (instance == null)
         {
             instance = this;
@@ -34,38 +44,85 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        // 게임 시작 시 기본값
         isGameOver = false;
+        if (player == null)
+        {
+            player = FindObjectOfType<Player>();
+        }
+        if (player != null)
+        {
+            playerStats = player.Stat;
+        }
+        if (restartButton != null)
+        {
+            restartButton.onClick.AddListener(RestartGame);
+        }
+        if (quitButton != null)
+        {
+            quitButton.onClick.AddListener(QuitGame);
+        }
+        if (gameOverText != null)
+        {
+            gameOverText.gameObject.SetActive(false);
+        }
+        if (pauseButton != null)
+        {
+            pauseButton.onClick.AddListener(() => GameOver(false));
+        }
+        if (bgmClip != null)
+        {
+            createdAudioSource = gameObject.AddComponent<AudioSource>();
+            createdAudioSource.clip = bgmClip;
+            createdAudioSource.loop = true;
+            createdAudioSource.Play();
+        }
     }
 
-    /// <summary>
-    /// 게임 오버 처리 (isClear가 true면 클리어로 간주)
-    /// </summary>
+    private void Update()
+    {
+        if (!isGameOver && playerStats != null && playerStats.CurHp <= 0)
+        {
+            GameOver(false);
+        }
+    }
+
     public void GameOver(bool isClear = false)
     {
         isGameOver = true;
-
-        // 점수 저장
-        ScoreManager scoreManager = FindObjectOfType<ScoreManager>();
-        if (scoreManager != null)
+        if (createdAudioSource != null)
         {
-            scoreManager.SaveHighScore();
+            createdAudioSource.Stop();
         }
-
-        // 추가적인 게임 오버 처리(연출, 사운드 등)는 여기서 구현
+        if (ScoreManager.Instance != null)
+        {
+            ScoreManager.Instance.SaveHighScore();
+        }
+        if (playerStats != null)
+        {
+            Debug.Log($"[GameOver] Player HP : {playerStats.CurHp} / {playerStats.MaxHp}");
+        }
+        if (isClear)
+        {
+            Debug.Log("게임 클리어!");
+        }
+        else
+        {
+            Debug.Log("게임 오버!");
+            Time.timeScale = 0f;
+            if (gameOverText != null)
+            {
+                gameOverText.text = "Game Over";
+                gameOverText.gameObject.SetActive(true);
+            }
+        }
     }
 
-    /// <summary>
-    /// 다시 시작
-    /// </summary>
     public void RestartGame()
     {
+        Time.timeScale = 1f;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
-    /// <summary>
-    /// 게임 종료(에디터 상에서는 플레이 중지)
-    /// </summary>
     public void QuitGame()
     {
         Application.Quit();
