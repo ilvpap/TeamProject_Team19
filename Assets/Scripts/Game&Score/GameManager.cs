@@ -39,6 +39,7 @@ public class GameManager : MonoBehaviour
     private AudioSource createdAudioSource;
     private bool isGameOver = false;
     public bool IsGameOver => isGameOver;
+    private bool isPaused = false;
 
     private void Awake()
     {
@@ -78,7 +79,8 @@ public class GameManager : MonoBehaviour
         }
         if (pauseButton != null)
         {
-            pauseButton.onClick.AddListener(() => GameOver(false));
+            // pauseButton.onClick.AddListener(() => GameOver());
+            // Time.timeScale = 0f;
         }
         if (bgmClip != null)
         {
@@ -97,16 +99,42 @@ public class GameManager : MonoBehaviour
     {
         if (!isGameOver && playerStats != null && playerStats.CurHp <= 0)
         {
-            GameOver(false);
+            GameOver(true);
         }
+    }
+
+
+    public void GameStop()
+    {
+        if (isPaused)
+        {
+            isPaused = false;
+            Time.timeScale = 1f;
+        }
+        else
+        {
+            isPaused = true;
+            Time.timeScale = 0f;
+        }
+
     }
 
     public void GameOver(bool isClear = false)
     {
         isGameOver = true;
+        Debug.Log("게임 오버!");
+
         if (createdAudioSource != null)
         {
+            Debug.Log("게임 오버!");
+            Time.timeScale = 0f;
+            if (gameOverText != null)
+            {
+                gameOverText.text = "Game Over";
+                gameOverText.gameObject.SetActive(true);
+            }
             createdAudioSource.Stop();
+
         }
         if (ScoreManager.Instance != null)
         {
@@ -116,16 +144,7 @@ public class GameManager : MonoBehaviour
         {
             Debug.Log($"[GameOver] Player HP : {playerStats.CurHp} / {playerStats.MaxHp}");
         }
-        else
-        {
-            Debug.Log("게임 오버!");
-            Time.timeScale = 0f;
-            if (gameOverText != null)
-            {
-                gameOverText.text = "Game Over";
-                gameOverText.gameObject.SetActive(true);
-            }
-        }
+
     }
 
     public void RestartGame()
