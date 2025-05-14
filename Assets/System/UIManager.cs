@@ -2,7 +2,14 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
-using UnityEngine.SceneManagement; // 씬 전환
+using UnityEngine.SceneManagement;
+
+public enum SceneType
+{
+    Main,
+    InGame,
+    Current
+}
 
 public class UIManager : MonoBehaviour
 {
@@ -31,32 +38,38 @@ public class UIManager : MonoBehaviour
         if (highScoreText != null)
             highScoreText.text = $"High Score : {highScore:F2}";
     }
-    
+
     public void ShowGameOver(string message)
     {
-        if (gameOverPanel != null) gameOverPanel.SetActive(true);
-        if (gameOverText != null) gameOverText.text = message;
-        
+        if (gameOverPanel != null)
+            gameOverPanel.SetActive(true);
+
+        if (gameOverText != null)
+            gameOverText.text = message;
+
         Time.timeScale = 0f; // 일시정지
     }
 
-
-    // 버튼용 함수들
-    public void RestartGame()
+    // 씬 전환
+    public void LoadScene(SceneType type)
     {
         Time.timeScale = 1f;
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-    }
 
-    public void GoToMainMenu()
-    { 
-        Time.timeScale = 1f;
-        SceneManager.LoadScene("MainScene"); // 메인화면 씬 이름
+        switch (type)
+        {
+            case SceneType.Main:
+                SceneManager.LoadScene("MainScene");
+                break;
+            case SceneType.InGame:
+                SceneManager.LoadScene("InGameScene");
+                break;
+            case SceneType.Current:
+                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+                break;
+        }
     }
-
-    public void StartGame()
-    {
-        Time.timeScale = 1f; 
-        SceneManager.LoadScene("InGameScene"); // 실제 게임 플레이 씬 이름
-    }
+    
+    public void StartGame() => LoadScene(SceneType.InGame);
+    public void GoToMainMenu() => LoadScene(SceneType.Main);
+    public void RestartGame() => LoadScene(SceneType.Current);
 }
