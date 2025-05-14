@@ -130,7 +130,6 @@ public class GameManager : MonoBehaviour
             Time.timeScale = 0f;
             if (gameOverText != null)
             {
-                gameOverText.text = "Game Over";
                 gameOverText.gameObject.SetActive(true);
             }
             createdAudioSource.Stop();
