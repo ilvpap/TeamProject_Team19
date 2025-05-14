@@ -44,6 +44,7 @@ public class ScoreManager : MonoBehaviour
 
     private void Update()
     {
+        SaveHighScore();
         if (GameManager.Instance.IsGameOver) return;
 
         currentScore += scoreIncreaseRate * Time.deltaTime;
