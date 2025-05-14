@@ -47,7 +47,7 @@ public class Player : MonoBehaviour
     {
         while (true)
         {
-            stat.GetDamage(0.01f);
+            stat.GetDamage(0.25f);
             Debug.Log("내 현재 체력 : <color=blue>" + stat.CurHp + "</color>");
             yield return new WaitForSecondsRealtime(0.1f);
         }
