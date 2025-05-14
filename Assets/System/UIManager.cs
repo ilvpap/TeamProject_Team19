@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement; // 씬 전환
 
 public class UIManager : MonoBehaviour
 {
@@ -36,5 +37,26 @@ public class UIManager : MonoBehaviour
         if (gameOverPanel != null) gameOverPanel.SetActive(true);
         if (gameOverText != null) gameOverText.text = message;
         
+        Time.timeScale = 0f; // 일시정지
+    }
+}
+
+    // 버튼용 함수들
+    public void RestartGame()
+    {
+        Time.timeScale = 1f;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    public void GoToMainMenu()
+    { 
+        Time.timeScale = 1f;
+        SceneManager.LoadScene("MainScene"); // 메인화면 씬 이름
+    }
+
+    public void StartGame()
+    {
+        Time.timeScale = 1f; 
+        SceneManager.LoadScene("InGameScene"); // 실제 게임 플레이 씬 이름
     }
 }
