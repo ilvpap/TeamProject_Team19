@@ -2,6 +2,15 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 using TMPro;
+// using UnityEngine.SceneManagement; // 중복으로 인해 주석 처리
+using System;
+
+public enum SceneType
+{
+    Main,
+    InGame,
+    Current
+}
 
 public class GameManager : MonoBehaviour
 {
@@ -19,32 +28,47 @@ public class GameManager : MonoBehaviour
     }
 
     [SerializeField] private Player player;
-    private PlayerStats playerStats;
     [SerializeField] private Button restartButton;
     [SerializeField] private Button quitButton;
+    [SerializeField] private Button restartButton1;
+    [SerializeField] private Button quitButton1;
     [SerializeField] private TextMeshProUGUI gameOverText;
     [SerializeField] private Button pauseButton;
-    [SerializeField] private AudioClip bgmClip;
+    [SerializeField] private Button startButton;
+    [SerializeField] private GameObject gameMenu;
+    [SerializeField] private AudioSource createdAudioSource;
 
-    private AudioSource createdAudioSource;
+    private PlayerStats playerStats;
     private bool isGameOver = false;
     public bool IsGameOver => isGameOver;
+    public bool isPaused = false;
 
     private void Awake()
     {
+        Time.timeScale = 1.0f;
+       
         if (instance == null)
         {
             instance = this;
+            
         }
         else
         {
             Destroy(gameObject);
         }
+       
+
+    }
+
+    public void StartGame()
+    {
+        createdAudioSource.Play();
     }
 
     private void Start()
     {
         isGameOver = false;
+
         if (player == null)
         {
             player = FindObjectOfType<Player>();
@@ -57,9 +81,17 @@ public class GameManager : MonoBehaviour
         {
             restartButton.onClick.AddListener(RestartGame);
         }
+        if (restartButton1 != null)
+        {
+            restartButton1.onClick.AddListener(RestartGame);
+        }
         if (quitButton != null)
         {
             quitButton.onClick.AddListener(QuitGame);
+        }
+        if (quitButton1 != null)
+        {
+            quitButton1.onClick.AddListener(QuitGame);
         }
         if (gameOverText != null)
         {
@@ -67,31 +99,68 @@ public class GameManager : MonoBehaviour
         }
         if (pauseButton != null)
         {
-            pauseButton.onClick.AddListener(() => GameOver(false));
+            // pauseButton.onClick.AddListener(() => GameOver());
+            // Time.timeScale = 0f;
         }
-        if (bgmClip != null)
+
+
+        if (startButton != null)
         {
-            createdAudioSource = gameObject.AddComponent<AudioSource>();
-            createdAudioSource.clip = bgmClip;
-            createdAudioSource.loop = true;
-            createdAudioSource.Play();
+            startButton.onClick.AddListener(() => LoadScene(SceneType.InGame));
         }
     }
 
     private void Update()
     {
-        if (!isGameOver && playerStats != null && playerStats.CurHp <= 0)
+        if (!isGameOver)
         {
-            GameOver(false);
+            if(playerStats != null)
+            {
+                if (playerStats.CurHp <= 0)
+                {
+                    GameOver(true);
+                    Debug.Log("HP0");
+                }
+            }
         }
+    }
+
+
+    public void GameStop()
+    {
+        if (isPaused)
+        {
+            createdAudioSource.UnPause();
+            isPaused = false;
+            Time.timeScale = 1f;
+            gameMenu.gameObject.SetActive(false);     
+        }
+        else
+        {
+            createdAudioSource.Pause();
+            isPaused = true;
+            Time.timeScale = 0f;
+            gameMenu.gameObject.SetActive(true);
+
+        }
+
     }
 
     public void GameOver(bool isClear = false)
     {
         isGameOver = true;
+        Debug.Log("게임 오버!");
+
         if (createdAudioSource != null)
         {
+            Debug.Log("게임 오버!");
+            Time.timeScale = 0f;
+            if (gameOverText != null)
+            {
+                gameOverText.gameObject.SetActive(true);
+            }
             createdAudioSource.Stop();
+
         }
         if (ScoreManager.Instance != null)
         {
@@ -101,20 +170,7 @@ public class GameManager : MonoBehaviour
         {
             Debug.Log($"[GameOver] Player HP : {playerStats.CurHp} / {playerStats.MaxHp}");
         }
-        if (isClear)
-        {
-            Debug.Log("게임 클리어!");
-        }
-        else
-        {
-            Debug.Log("게임 오버!");
-            Time.timeScale = 0f;
-            if (gameOverText != null)
-            {
-                gameOverText.text = "Game Over";
-                gameOverText.gameObject.SetActive(true);
-            }
-        }
+
     }
 
     public void RestartGame()
@@ -125,9 +181,33 @@ public class GameManager : MonoBehaviour
 
     public void QuitGame()
     {
-        Application.Quit();
+        if (SceneManager.GetActiveScene().name == "MainScene")
+        {
+            Application.Quit();
 #if UNITY_EDITOR
-        UnityEditor.EditorApplication.isPlaying = false;
+            UnityEditor.EditorApplication.isPlaying = false;
 #endif
+        }
+        else
+        {
+            SceneManager.LoadScene("MainScene");
+        }
+    }
+
+    public void LoadScene(SceneType type)
+    {
+        Time.timeScale = 1f;
+        switch (type)
+        {
+            case SceneType.Main:
+                SceneManager.LoadScene("MainScene");
+                break;
+            case SceneType.InGame:
+                SceneManager.LoadScene("InGameScene");
+                break;
+            case SceneType.Current:
+                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+                break;
+        }
     }
 }

@@ -14,7 +14,6 @@ public class ScoreManager : MonoBehaviour
         }
     }
 
-    [SerializeField] private float finishScore = 1000f;
     [SerializeField] private float scoreIncreaseRate = 10f;
 
     private float currentScore = 0f;
@@ -45,25 +44,18 @@ public class ScoreManager : MonoBehaviour
 
     private void Update()
     {
+        SaveHighScore();
         if (GameManager.Instance.IsGameOver) return;
 
-        // 시간 흐름에 따른 점수 증가
         currentScore += scoreIncreaseRate * Time.deltaTime;
 
-        // UI 갱신
         if (currentScoreText != null)
         {
-            currentScoreText.text = $"Score : {currentScore:F2}";
+            currentScoreText.text = $"{currentScore:F0}";
         }
         if (highScoreText != null)
         {
-            highScoreText.text = $"High Score : {highScore:F2}";
-        }
-
-        // 목표 점수 달성 시 게임 종료 처리
-        if (currentScore >= finishScore)
-        {
-            GameManager.Instance.GameOver(true);
+            highScoreText.text = $"High Score \n {highScore:F0}";
         }
     }
 

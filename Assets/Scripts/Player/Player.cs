@@ -50,6 +50,7 @@ public class Player : MonoBehaviour
             stat.GetDamage(0.25f);
             Debug.Log("내 현재 체력 : <color=blue>" + stat.CurHp + "</color>");
             yield return new WaitForSecondsRealtime(0.1f);
+            yield return new WaitUntil(() => !GameManager.Instance.isPaused);
         }
     }
 }
