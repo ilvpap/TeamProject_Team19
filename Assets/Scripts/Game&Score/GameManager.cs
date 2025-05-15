@@ -28,7 +28,6 @@ public class GameManager : MonoBehaviour
     }
 
     [SerializeField] private Player player;
-    private PlayerStats playerStats;
     [SerializeField] private Button restartButton;
     [SerializeField] private Button quitButton;
     [SerializeField] private Button restartButton1;
@@ -36,13 +35,13 @@ public class GameManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI gameOverText;
     [SerializeField] private Button pauseButton;
     [SerializeField] private Button startButton;
-    [SerializeField] private AudioClip bgmClip;
     [SerializeField] private GameObject gameMenu;
+    [SerializeField] private AudioSource createdAudioSource;
 
-    private AudioSource createdAudioSource;
+    private PlayerStats playerStats;
     private bool isGameOver = false;
     public bool IsGameOver => isGameOver;
-    private bool isPaused = false;
+    public bool isPaused = false;
 
     private void Awake()
     {
@@ -61,7 +60,10 @@ public class GameManager : MonoBehaviour
 
     }
 
-    
+    public void StartGame()
+    {
+        createdAudioSource.Play();
+    }
 
     private void Start()
     {
@@ -100,13 +102,8 @@ public class GameManager : MonoBehaviour
             // pauseButton.onClick.AddListener(() => GameOver());
             // Time.timeScale = 0f;
         }
-        if (bgmClip != null)
-        {
-            createdAudioSource = gameObject.AddComponent<AudioSource>();
-            createdAudioSource.clip = bgmClip;
-            createdAudioSource.loop = true;
-            createdAudioSource.Play();
-        }
+
+
         if (startButton != null)
         {
             startButton.onClick.AddListener(() => LoadScene(SceneType.InGame));
@@ -115,9 +112,16 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
-        if (!isGameOver && playerStats != null && playerStats.CurHp <= 0)
+        if (!isGameOver)
         {
-            GameOver(true);
+            if(playerStats != null)
+            {
+                if (playerStats.CurHp <= 0)
+                {
+                    GameOver(true);
+                    Debug.Log("HP0");
+                }
+            }
         }
     }
 
@@ -126,12 +130,14 @@ public class GameManager : MonoBehaviour
     {
         if (isPaused)
         {
+            createdAudioSource.UnPause();
             isPaused = false;
             Time.timeScale = 1f;
             gameMenu.gameObject.SetActive(false);     
         }
         else
         {
+            createdAudioSource.Pause();
             isPaused = true;
             Time.timeScale = 0f;
             gameMenu.gameObject.SetActive(true);
