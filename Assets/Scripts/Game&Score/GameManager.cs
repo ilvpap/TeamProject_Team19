@@ -31,13 +31,10 @@ public class GameManager : MonoBehaviour
     private PlayerStats playerStats;
     [SerializeField] private Button restartButton;
     [SerializeField] private Button quitButton;
-    [SerializeField] private Button restartButton1;
-    [SerializeField] private Button quitButton1;
     [SerializeField] private TextMeshProUGUI gameOverText;
     [SerializeField] private Button pauseButton;
     [SerializeField] private Button startButton;
     [SerializeField] private AudioClip bgmClip;
-    [SerializeField] private GameObject gameMenu;
 
     private AudioSource createdAudioSource;
     private bool isGameOver = false;
@@ -46,18 +43,14 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
-       
         if (instance == null)
         {
             instance = this;
-            DontDestroyOnLoad(gameObject);
         }
         else
         {
             Destroy(gameObject);
         }
-       
-
     }
 
     private void Start()
@@ -76,17 +69,9 @@ public class GameManager : MonoBehaviour
         {
             restartButton.onClick.AddListener(RestartGame);
         }
-        if (restartButton1 != null)
-        {
-            restartButton1.onClick.AddListener(RestartGame);
-        }
         if (quitButton != null)
         {
             quitButton.onClick.AddListener(QuitGame);
-        }
-        if (quitButton1 != null)
-        {
-            quitButton1.onClick.AddListener(QuitGame);
         }
         if (gameOverText != null)
         {
@@ -125,14 +110,11 @@ public class GameManager : MonoBehaviour
         {
             isPaused = false;
             Time.timeScale = 1f;
-            gameMenu.gameObject.SetActive(false);     
         }
         else
         {
             isPaused = true;
             Time.timeScale = 0f;
-            gameMenu.gameObject.SetActive(true);
-
         }
 
     }
