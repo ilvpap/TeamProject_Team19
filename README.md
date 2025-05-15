@@ -42,17 +42,17 @@
 ---
 
 ## 📁 폴더 구조
-// Assets/
-// ├── Scripts/
-// │ ├── Player/
-// │ ├── Item/
-// │ ├── System/ ← GameManager, ScoreManager, UIManager
-// │ └── Obstacle/
-// ├── Scenes/
-// │ ├── MainScene.unity
-// │ └── InGameScene.unity
-// ├── Prefabs/
-// └── UI/
+// Assets/<br/>
+// ├── Scripts/<br/>
+// │ ├── Player/<br/>
+// │ ├── Item/<br/>
+// │ ├── System/ ← GameManager, ScoreManager, UIManager<br/>
+// │ └── Obstacle/<br/>
+// ├── Scenes/<br/>
+// │ ├── MainScene.unity<br/>
+// │ └── InGameScene.unity<br/>
+// ├── Prefabs/<br/>
+// └── UI/<br/>
 
 
 ---
