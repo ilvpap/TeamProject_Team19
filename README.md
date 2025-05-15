@@ -43,16 +43,16 @@
 
 ## 📁 폴더 구조
 // Assets/
-// ├── Scripts/
-// │ ├── Player/
-// │ ├── Item/
-// │ ├── System/ ← GameManager, ScoreManager, UIManager
-// │ └── Obstacle/
-// ├── Scenes/
-// │ ├── MainScene.unity
-// │ └── InGameScene.unity
-// ├── Prefabs/
-// └── UI/
+// ├── Scripts/  
+// │ ├── Player/  
+// │ ├── Item/  
+// │ ├── System/ ← GameManager, ScoreManager, UIManager  
+// │ └── Obstacle/  
+// ├── Scenes/  
+// │ ├── MainScene.unity  
+// │ └── InGameScene.unity  
+// ├── Prefabs/  
+// └── UI/  
 
 
 ---
