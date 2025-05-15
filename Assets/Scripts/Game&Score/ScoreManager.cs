@@ -50,11 +50,11 @@ public class ScoreManager : MonoBehaviour
 
         if (currentScoreText != null)
         {
-            currentScoreText.text = $"Score : {currentScore:F2}";
+            currentScoreText.text = $"{currentScore:F0}";
         }
         if (highScoreText != null)
         {
-            highScoreText.text = $"High Score : {highScore:F2}";
+            highScoreText.text = $"High Score \n {highScore:F0}";
         }
     }
 

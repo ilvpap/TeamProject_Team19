@@ -20,10 +20,12 @@ public class PlayerStats
     }
     public void GetDamage(float damage)
     {
+        Debug.Log("-Hp");
         curHp -= damage;
         curHp = Mathf.Clamp(curHp, 0, MaxHp);
         if(curHp <= 0)
         {
+            GameManager.Instance.GameOver(false);
             //Todo: 게임매니저에서 게임오버를 만들었을 경우 해당 함수를 추후 사용.
             GameOver();
         }
