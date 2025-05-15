@@ -4,15 +4,26 @@ using UnityEngine;
 
 public class Shield : Item
 {
-    public override void Activate(PlayerController player)  
+    public override void Activate(Player player)
     {
-       /*player.StartCoroutine(ShieldRoutine(player));*/           //코루틴 시작
+        PlayerController playerController = player.GetComponent<PlayerController>();
+        if (playerController != null)
+        {
+            player.StartCoroutine(ShieldRoutine(playerController));           //코루틴 시작
+        }
     }
 
-    //private IEnumerator ShieldRoutine(PlayerController player)    
-    //{
-    //    player.isShielded = true;                         //무적 on
-    //    yield return new WaitForSeconds(value);           //지속시간 value값
-    //    player.isShielded = false;                        //무적off
-    //}
+    private IEnumerator ShieldRoutine(PlayerController playerController)
+    {
+        float timer = value;
+        while (timer > 0)
+        {
+            playerController.isShielded = true; // 무적 상태로 설정
+            Debug.Log("무적 효과 진행 중... 남은 시간: " + ((int)timer).ToString("D2"));
+            timer -= Time.deltaTime;
+            yield return null;
+        }
+        playerController.isShielded = false; // 무적 해제
+        Debug.Log("무적 종료");
+    }
 }

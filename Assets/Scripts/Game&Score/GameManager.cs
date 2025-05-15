@@ -1,5 +1,16 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
+using TMPro;
+// using UnityEngine.SceneManagement; // 중복으로 인해 주석 처리
+using System;
+
+public enum SceneType
+{
+    Main,
+    InGame,
+    Current
+}
 
 public class GameManager : MonoBehaviour
 {
@@ -16,12 +27,22 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    [SerializeField] private Player player;
+    private PlayerStats playerStats;
+    [SerializeField] private Button restartButton;
+    [SerializeField] private Button quitButton;
+    [SerializeField] private TextMeshProUGUI gameOverText;
+    [SerializeField] private Button pauseButton;
+    [SerializeField] private Button startButton;
+    [SerializeField] private AudioClip bgmClip;
+
+    private AudioSource createdAudioSource;
     private bool isGameOver = false;
     public bool IsGameOver => isGameOver;
+    private bool isPaused = false;
 
     private void Awake()
     {
-        // 싱글톤 할당
         if (instance == null)
         {
             instance = this;
@@ -34,43 +55,132 @@ public class GameManager : MonoBehaviour
 
     private void Start()
     {
-        // 게임 시작 시 기본값
         isGameOver = false;
+
+        if (player == null)
+        {
+            player = FindObjectOfType<Player>();
+        }
+        if (player != null)
+        {
+            playerStats = player.Stat;
+        }
+        if (restartButton != null)
+        {
+            restartButton.onClick.AddListener(RestartGame);
+        }
+        if (quitButton != null)
+        {
+            quitButton.onClick.AddListener(QuitGame);
+        }
+        if (gameOverText != null)
+        {
+            gameOverText.gameObject.SetActive(false);
+        }
+        if (pauseButton != null)
+        {
+            // pauseButton.onClick.AddListener(() => GameOver());
+            // Time.timeScale = 0f;
+        }
+        if (bgmClip != null)
+        {
+            createdAudioSource = gameObject.AddComponent<AudioSource>();
+            createdAudioSource.clip = bgmClip;
+            createdAudioSource.loop = true;
+            createdAudioSource.Play();
+        }
+        if (startButton != null)
+        {
+            startButton.onClick.AddListener(() => LoadScene(SceneType.InGame));
+        }
     }
 
-    /// <summary>
-    /// 게임 오버 처리 (isClear가 true면 클리어로 간주)
-    /// </summary>
+    private void Update()
+    {
+        if (!isGameOver && playerStats != null && playerStats.CurHp <= 0)
+        {
+            GameOver(true);
+        }
+    }
+
+
+    public void GameStop()
+    {
+        if (isPaused)
+        {
+            isPaused = false;
+            Time.timeScale = 1f;
+        }
+        else
+        {
+            isPaused = true;
+            Time.timeScale = 0f;
+        }
+
+    }
+
     public void GameOver(bool isClear = false)
     {
         isGameOver = true;
+        Debug.Log("게임 오버!");
 
-        // 점수 저장
-        ScoreManager scoreManager = FindObjectOfType<ScoreManager>();
-        if (scoreManager != null)
+        if (createdAudioSource != null)
         {
-            scoreManager.SaveHighScore();
+            Debug.Log("게임 오버!");
+            Time.timeScale = 0f;
+            if (gameOverText != null)
+            {
+                gameOverText.gameObject.SetActive(true);
+            }
+            createdAudioSource.Stop();
+
+        }
+        if (ScoreManager.Instance != null)
+        {
+            ScoreManager.Instance.SaveHighScore();
+        }
+        if (playerStats != null)
+        {
+            Debug.Log($"[GameOver] Player HP : {playerStats.CurHp} / {playerStats.MaxHp}");
         }
 
-        // 추가적인 게임 오버 처리(연출, 사운드 등)는 여기서 구현
     }
 
-    /// <summary>
-    /// 다시 시작
-    /// </summary>
     public void RestartGame()
     {
+        Time.timeScale = 1f;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
-    /// <summary>
-    /// 게임 종료(에디터 상에서는 플레이 중지)
-    /// </summary>
     public void QuitGame()
     {
-        Application.Quit();
+        if (SceneManager.GetActiveScene().name == "MainScene")
+        {
+            Application.Quit();
 #if UNITY_EDITOR
-        UnityEditor.EditorApplication.isPlaying = false;
+            UnityEditor.EditorApplication.isPlaying = false;
 #endif
+        }
+        else
+        {
+            SceneManager.LoadScene("MainScene");
+        }
+    }
+
+    public void LoadScene(SceneType type)
+    {
+        Time.timeScale = 1f;
+        switch (type)
+        {
+            case SceneType.Main:
+                SceneManager.LoadScene("MainScene");
+                break;
+            case SceneType.InGame:
+                SceneManager.LoadScene("InGameScene");
+                break;
+            case SceneType.Current:
+                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+                break;
+        }
     }
 }

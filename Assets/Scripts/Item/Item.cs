@@ -1,24 +1,35 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting.Antlr3.Runtime.Misc;
 using UnityEngine;
 
 public class Item : MonoBehaviour
 {
-    public PlayerController player;
-    public int value = 0;
+    public Player player;
+    public AudioClip pickupSound;
+    public int value = 10; //나중에 변경
 
-    public virtual void ApplyEffect(PlayerController player) { }
-    public virtual void Activate(PlayerController player) { }
+    public virtual void ApplyEffect(PlayerStats player) { }
+    public virtual void Activate(Player player) { }
 
-    private void OnCollisionEnter2D(Collision2D collision)
+
+    private void OnTriggerEnter2D(Collider2D collision)
     {
-        player = collision.gameObject.GetComponent<PlayerController>();
+        
+        Player player = collision.gameObject.GetComponent<Player>(); 
         if (player != null)
         {
-            ApplyEffect(player);
+            if(pickupSound != null)
+            {
+                AudioSource.PlayClipAtPoint(pickupSound,transform.position);
+            }
+            
+            PlayerStats stat = player.Stat;
+            ApplyEffect(stat);
             Activate(player);
             Destroy(gameObject);
 
         }
     }
+   
 }
