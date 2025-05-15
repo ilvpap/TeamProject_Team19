@@ -46,12 +46,11 @@ public class GameManager : MonoBehaviour
 
     private void Awake()
     {
-        Time.timeScale = 1.0f;
        
         if (instance == null)
         {
             instance = this;
-            
+            DontDestroyOnLoad(gameObject);
         }
         else
         {
@@ -60,8 +59,6 @@ public class GameManager : MonoBehaviour
        
 
     }
-
-    
 
     private void Start()
     {

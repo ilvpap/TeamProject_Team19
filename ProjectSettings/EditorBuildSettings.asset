@@ -6,9 +6,12 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Scenes/dev_jong/MainScene.unity
-    guid: 76d4e07affe6b1a45949cc9db5fd878b
+    path: Assets/Scenes/MainScene.unity
+    guid: 2cda990e2423bbf4892e6590ba056729
   - enabled: 1
-    path: Assets/Scenes/dev_jong/InGameScene.unity
-    guid: 86d886bbbef44f24797687ccd473e91a
+    path: Assets/Scenes/dev_eun/MainScene.unity
+    guid: bc6b87ef84b7af54aa2c969a3b8fc7ae
+  - enabled: 1
+    path: Assets/Scenes/dev_eun/InGameScene.unity
+    guid: e89fdf9b239d8f841b5d5aed1d99ef1f
   m_configObjects: {}
